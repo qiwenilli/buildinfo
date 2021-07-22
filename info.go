@@ -17,8 +17,12 @@ func BuildInfos() []string {
 }
 
 func recursionReplace(mod *debug.Module) string {
-	if mod.Replace == nil {
-		return fmt.Sprintf("%s@%s", mod.Path, mod.Version)
+	ver := mod.Version
+	if ver == "" {
+		ver = "Local"
 	}
-	return fmt.Sprintf("%s@%s => %s", mod.Path, mod.Version, recursionReplace(mod.Replace))
+	if mod.Replace == nil {
+		return fmt.Sprintf("%s@%s", mod.Path, ver)
+	}
+	return fmt.Sprintf("%s@%s => %s", mod.Path, ver, recursionReplace(mod.Replace))
 }
